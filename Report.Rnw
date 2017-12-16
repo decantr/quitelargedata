@@ -1,0 +1,17 @@
+\documentclass{article}
+
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+
+\section{Introduction}
+\section{Data Exploration}
+\subsection{Dataset Choice}
+\subsection{Technology Platform}
+\subsection{Problem Statement & Data Exploration}
+\subsection{Pre-proccessing}
+\section{Modelling / Classification}
+\section{Improving Performance}
+\section{Reproducing Results}
+
+
+\end{document}
