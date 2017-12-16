@@ -1,13 +1,29 @@
 \documentclass{article}
 
+\usepackage{url}
+\usepackage{verbatim}
+
+\setlength{\textwidth}{6.5in} 
+\setlength{\textheight}{9in}
+\setlength{\oddsidemargin}{0in} 
+\setlength{\evensidemargin}{0in}
+\setlength{\topmargin}{-1.5cm}
+\setlength{\parindent}{0cm}
+
 \begin{document}
 \SweaveOpts{concordance=TRUE}
+
+\title{Coursework (CM3111) \\ Big Data Analytics}
+\author{Shaw Eastwood}
+
+\maketitle
 
 \section{Introduction}
 \section{Data Exploration}
 \subsection{Dataset Choice}
+For the dataset I opted to use the Mushroom Classifiction dataset provided by UCI Machine Learing on Kaggle. I chose this dataset because of its potential practical application in predicting the edibility of a mushroom merely based on characteristic. This dataset was also featured on Kaggle and came with a very high number of reccomendations. The size of the dataset also made it a suitible choice it was a managable size with a high variance in the attributes.
 \subsection{Technology Platform}
-\subsection{Problem Statement & Data Exploration}
+\subsection{Problem Statement \& Data Exploration}
 \subsection{Pre-proccessing}
 \section{Modelling / Classification}
 \section{Improving Performance}
