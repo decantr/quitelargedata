@@ -1,5 +1,22 @@
+% !Rnw weave = knitr
 \documentclass{article}
 
+\usepackage{breakurl}
+\usepackage{graphicx, verbatim}
+\usepackage{amsmath}
+\usepackage{amscd}
+\usepackage{lipsum}
+\usepackage{enumitem}
+\usepackage{todonotes}
+\usepackage[tableposition=top]{caption}
+\usepackage{ifthen}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{listings}
+\usepackage{inconsolata}
+\usepackage{float}
+\usepackage{setspace}
 \usepackage{graphicx,parskip,bibunits,appendix,float}
 \usepackage[ruled] {algorithm2e}
 \usepackage{url,amsmath,amssymb,fancybox,listings,pdfpages,caption,multicol,datetime,rotating, booktabs}
@@ -19,7 +36,6 @@
 }
 
 \begin{document}
-\SweaveOpts{concordance=TRUE}
 
 \title{Coursework (CM3111) \\ Big Data Analytics}
 \author{Shaw Eastwood, \href{mailto:s.eastwood@rgu.ac.uk}{s.eastwood@rgu.ac.uk}}
@@ -28,11 +44,59 @@
 
 \section{Introduction}
 \section{Data Exploration}
+<<echo=TRUE, eval=TRUE>>=
+setwd("~/Documents/rstuff/quitelargedata")
+df <- read.csv("mushrooms.csv",header = TRUE)
+@
+
 \subsection{Dataset Choice}
 For the dataset I opted to use the Mushroom Classifiction dataset provided by UCI Machine Learing on Kaggle\footnote{\href{https://www.kaggle.com/uciml/mushroom-classification/}{https://www.kaggle.com/uciml/mushroom-classification/}}. I chose this dataset because of its potential practical application in predicting the edibility of a mushroom merely based on characteristic. This dataset was also featured on Kaggle and came with a very high number of reccomendations. The size of the dataset also made it a suitible choice it was a managable size with a high variance in the attributes.
 \subsection{Technology Platform}
 For this particular dataset, there is little merit to be gained from using Hadoop as the dataset is of a reasonable size. 
 \subsection{Problem Statement \& Data Exploration}
+\subsubsection{Description}
+The dataset contains a list mushrooms and describes their various characteristic, listed below, along with whether or not they are poisoness or not. The aim of this report is to build a model which will predict to degree of certainty which characteristics of the mushrooms dictate the edibility of the mushrooms.
+
+\subsubsection{Number of Rows and Columns}
+Number of Rows
+<<echo=TRUE, eval=TRUE>>=
+cat("Number of Rows in the set is: ", nrow(df))
+@
+
+Number of Columns
+<<echo=TRUE, eval=TRUE>>=
+cat("Number of Columns/Features in the set is: ", ncol(df))
+@
+
+\subsubsection{Names of Features}
+<<echo=TRUE, eval=TRUE>>=
+# names of the columns/features:
+names(df)
+@
+
+\subsubsection{Class / Label Distribution}
+<<echo=TRUE, eval=TRUE>>=
+# for each column in df cat the column name plus the amount of uniques
+for (i in names(df)) {
+	cat(i, ":", length(unique(df[[i]])), "\n")
+}
+@
+
+
+\subsubsection{Glance at the Data}
+<<echo=TRUE, eval=TRUE>>=
+# copy the first four rows into a temporary
+dfs <- df[1:4,]
+# delete the names of columns so the output isn't massive
+names(dfs) <- NULL
+# show those lines we just copied over
+head(dfs, n = 4)
+@
+
+\subsubsection{Distribution}
+<<>>=
+barplot(table(df$class), col = grey.colors(2), names.arg = c("edible", "poisoness"), xpd = FALSE, ylim = c(3500, 4500), offset(3000))
+@
 
 \subsection{Pre-proccessing}
 \section{Modelling / Classification}
