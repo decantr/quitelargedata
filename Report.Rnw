@@ -37,7 +37,7 @@
 
 \begin{document}
 
-\title{Coursework (CM3111) \\ Big Data Analytics}
+\title{Coursework (CM3111) \\ Big Data Analytic}
 \author{Shaw Eastwood, \href{mailto:s.eastwood@rgu.ac.uk}{s.eastwood@rgu.ac.uk}}
 
 \maketitle
@@ -46,16 +46,15 @@
 \section{Data Exploration}
 <<echo=TRUE, eval=TRUE>>=
 setwd("~/Documents/rstuff/quitelargedata")
-df <- read.csv("mushrooms.csv",header = TRUE)
+df <- read.csv("winequality-red.csv",header = TRUE)
 @
-
 \subsection{Dataset Choice}
-For the dataset I opted to use the Mushroom Classifiction dataset provided by UCI Machine Learing on Kaggle\footnote{\href{https://www.kaggle.com/uciml/mushroom-classification/}{https://www.kaggle.com/uciml/mushroom-classification/}}. I chose this dataset because of its potential practical application in predicting the edibility of a mushroom merely based on characteristic. This dataset was also featured on Kaggle and came with a very high number of reccomendations. The size of the dataset also made it a suitible choice it was a managable size with a high variance in the attributes.
+For the dataset I opted to use the Red Wine Quality dataset provided by UCI Machine Learning on Kaggle\footnote{\href{https://www.kaggle.com/uciml/red-wine-quality-cortez-et-al-2009}{kaggle.com/uciml/red-wine-quality-cortez-et-al-2009}}. I chose this dataset as it is well laid out and has enough features to provide a decent chance to train and test the model against the set. This dataset was also featured on Kaggle and came with a high number of recommendations. The size is also in the sweet spot of manageable while having enough elements to experiment on it.
 \subsection{Technology Platform}
-For this particular dataset, there is little merit to be gained from using Hadoop as the dataset is of a reasonable size. 
+For this particular dataset, there is little merit to be gained from using Hadoop as the dataset is of a reasonable size.
 \subsection{Problem Statement \& Data Exploration}
 \subsubsection{Description}
-The dataset contains a list mushrooms and describes their various characteristic, listed below, along with whether or not they are poisoness or not. The aim of this report is to build a model which will predict to degree of certainty which characteristics of the mushrooms dictate the edibility of the mushrooms.
+The data set contains a list of various red wines with their various characteristic, listed below, along with the quality, which is the class. The aim of this report is to build a model which will predict the quality to a degree of certainty which characteristics of the wine dictate the quality.
 
 \subsubsection{Number of Rows and Columns}
 <<echo=TRUE, eval=TRUE>>=
@@ -81,53 +80,44 @@ table(df$class)
 # copy the first four rows into a temporary
 dfs <- df[1:4,]
 # delete the names of columns so the text output isn't massive
-names(dfs) <- NULL
+unname(dfs, force = TRUE)
 # show those lines we just copied over
 head(dfs, n = 4)
 @
 
 \subsubsection{Distribution}
 <<>>=
-barplot(table(df$class), col = grey.colors(2), names.arg = c("edible", "poisoness"), xpd = FALSE, ylim = c(3500, 4500), offset(3000))
+table(df$quality)
+barplot(table(df$quality), col = grey.colors(6), ylim = c(0, 700),
+				main = c("Wine Quality Dispersion", ""),
+				xlab = "Quality", ylab = "No. of Wine's")
 @
 
 \subsection{Pre-proccessing}
 <<>>=
-# the length of the unique values for each col
-length(unique(is.na(df)))
+# list missing rows with missing values
+dfs[!complete.cases(dfs),]
 @
 Since our dataset doesn't have any missing values we don't need to worry about handling this.
 
 <<>>=
-unique(df$veil.type)
+summary(df)
 @
 Because we only have one 'veil type' across all of our mushrooms we can disregard this column.
 <<>>=
 # drop the veil type from the set
-df <- (df[-c(17)])
+df <- (df[-c(3)])
 names(df)
 @
 
 \section{Modelling / Classification}
 
-Determine which, if any, of the Xj have an association with Y .
-Identify the ’best’ subset of predictors from X1, X2, . . . , Xk .
-Determine the goodness of fit of the selected model.
-Interpret the coefficient estimates.
-Determine the accuracy of estimated effects (coefficient
-estimates).
-Compute and determine the accuracy of predictions of Y for a
-set of observations on the explanatory variables, Xj
-, included
-in the model.
-
-Forward/Backward selection 
-
 In this section I will use
 
 <<>>=
-plot(df$cap.color,df$cap.shape)
-
+plot(df$alcohol,df$quality)
+plot(df$sulphates,df$quality)
+plot(df$sulphates+df$quality,df$quality)
 @
 
 \section{Improving Performance}
