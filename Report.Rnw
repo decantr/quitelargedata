@@ -58,13 +58,9 @@ For this particular dataset, there is little merit to be gained from using Hadoo
 The dataset contains a list mushrooms and describes their various characteristic, listed below, along with whether or not they are poisoness or not. The aim of this report is to build a model which will predict to degree of certainty which characteristics of the mushrooms dictate the edibility of the mushrooms.
 
 \subsubsection{Number of Rows and Columns}
-Number of Rows
 <<echo=TRUE, eval=TRUE>>=
+dim(df)
 cat("Number of Rows in the set is: ", nrow(df))
-@
-
-Number of Columns
-<<echo=TRUE, eval=TRUE>>=
 cat("Number of Columns/Features in the set is: ", ncol(df))
 @
 
@@ -76,10 +72,7 @@ names(df)
 
 \subsubsection{Class / Label Distribution}
 <<echo=TRUE, eval=TRUE>>=
-# for each column in df cat the column name plus the amount of uniques
-for (i in names(df)) {
-	cat(i, ":", length(unique(df[[i]])), "\n")
-}
+table(df$class)
 @
 
 
@@ -87,7 +80,7 @@ for (i in names(df)) {
 <<echo=TRUE, eval=TRUE>>=
 # copy the first four rows into a temporary
 dfs <- df[1:4,]
-# delete the names of columns so the output isn't massive
+# delete the names of columns so the text output isn't massive
 names(dfs) <- NULL
 # show those lines we just copied over
 head(dfs, n = 4)
@@ -99,7 +92,44 @@ barplot(table(df$class), col = grey.colors(2), names.arg = c("edible", "poisones
 @
 
 \subsection{Pre-proccessing}
+<<>>=
+# the length of the unique values for each col
+length(unique(is.na(df)))
+@
+Since our dataset doesn't have any missing values we don't need to worry about handling this.
+
+<<>>=
+unique(df$veil.type)
+@
+Because we only have one 'veil type' across all of our mushrooms we can disregard this column.
+<<>>=
+# drop the veil type from the set
+df <- (df[-c(17)])
+names(df)
+@
+
 \section{Modelling / Classification}
+
+Determine which, if any, of the Xj have an association with Y .
+Identify the ’best’ subset of predictors from X1, X2, . . . , Xk .
+Determine the goodness of fit of the selected model.
+Interpret the coefficient estimates.
+Determine the accuracy of estimated effects (coefficient
+estimates).
+Compute and determine the accuracy of predictions of Y for a
+set of observations on the explanatory variables, Xj
+, included
+in the model.
+
+Forward/Backward selection 
+
+In this section I will use
+
+<<>>=
+plot(df$cap.color,df$cap.shape)
+
+@
+
 \section{Improving Performance}
 \section{Reproducing Results}
 
