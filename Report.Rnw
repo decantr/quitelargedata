@@ -42,7 +42,7 @@
 
 \maketitle
 
-\section{Introduction}
+\section{}
 \section{Data Exploration}
 \subsection{Dataset Choice}
 For the dataset I opted to use the Mushroom Classifiction dataset provided by UCI Machine Learing on Kaggle\footnote{\href{https://www.kaggle.com/uciml/mushroom-classification/}{https://www.kaggle.com/uciml/mushroom-classification/}}. I chose this dataset because of its potential practical application in predicting the edibility of a mushroom merely based on characteristic. This dataset was also featured on Kaggle and came with a very high number of reccomendations. The size of the dataset also made it a suitible choice it was a managable size with a high variance in the attributes.
@@ -87,7 +87,7 @@ names(dfs) <- NULL
 head(dfs, n = 4)
 @
 
-\subsubsection{Distribution}
+\pagebreak\subsubsection{Distribution}
 <<>>=
 barplot(table(df$class), col = grey.colors(2), names.arg = c("edible", "poisoness"), xpd = FALSE, ylim = c(3500, 4500), offset(3000))
 @
@@ -135,6 +135,7 @@ I will be using the Random Forest model to handle the data as it is likely to ha
 
 \subsection{Building Model}
 \subsubsection{Divide The Dataset}
+Split the dataset with 70\% for training and the remainder for testing the model
 <<>>=
 i <- sample(nrow(df), 0.7 * nrow(df)) # get 70% of the elements
 
@@ -142,8 +143,7 @@ train = df[i,]
 test =  df[-i,]
 @
 
-
-
+\pagebreak\subsubsection{Building the Model}
 <<>>=
 library(randomForest)
 
@@ -158,7 +158,7 @@ pre <- predict(forest, test)
 sol <- data.frame(class = test$class, edible = pre)
 @
 
-\subsubsection{Accuracy}
+\subsection{Testing and Evaluation}
 <<>>=
 print(forest)
 @
@@ -167,31 +167,31 @@ Using all of the features of the dataset we are able to be one hundred percent a
 <<>>=
 table(pre == test$class)
 @
+\pagebreak
 Quickly testing whether our test dataset matches our prediction of the test dataset, which it does.
-
 <<>>=
-plot(forest)
+plot(forest, main = "Error rate for first model")
 @
 The graph shows us that it takes approximately thirty tree's before the model is able to be a hundred percent accurate.
 
 
-\subsubsection{Importance}
+\pagebreak\subsubsection{Importance}
 <<>>=
 varImpPlot(forest)
 @
 This graph shows the importance of each of the features when predicting the edibility of the mushroom. From this graph we can see a number of features are unimportant to the model such as veil.color, gill.attachment, etc. these 
 
-\section{Improving Performance}
+\pagebreak\section{Improving Performance}
 \subsubsection{Shrinking The Input Features}
 By looking at the graph of importance from our origional model we can select the most important features
 <<>>=
 # reduce the amount of features we give the randomForest
 forSmall <- randomForest(as.factor(class) ~ odor + gill.color + gill.size +
-		spore.print.color + ring.type + stalk.root + habitat + population,
+		spore.print.color + ring.type + stalk.root + habitat + population + bruises,
 	data = train)
 @
 
-We can see that this new model still maintains the same level of accuracy
+We can see that this new model still maintains the same level of accuracy. It is possible to achieve the same accuracy with one less feature however on some iterations of randomForest it would return with a 0.02\% error rate
 <<>>=
 print(forSmall) # print out the forest so we can see the accuracy
 @
@@ -200,7 +200,11 @@ And if we test this model in a prediction and compare that with our test dataset
 <<>>=
 table(predict(forSmall, test) == test$class) # check a prediction against the test data
 @
-We can see it does indeed match 
+
+\pagebreak We can see it does indeed match 
+<<>>=
+plot(forSmall, main = "Error rate for second iteration")
+@
 
 
 \end{document}
